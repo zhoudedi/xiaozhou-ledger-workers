@@ -1,0 +1,170 @@
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+const resources = {
+  zh: {
+    translation: {
+      nav: { home: '首页', ledgers: '礼簿', analytics: '统计', settings: '设置', contacts: '联系人' },
+      dashboard: { balance: '当前结余', received: '总收到', given: '总送出', activity: '最近记录', viewAll: '查看全部', viewTimeline: '时间轴查看全部', noRecords: '还没有记录，点下方"+"开启第一笔', reminders: '提醒事项', shareTitle: '我的小周账本概览', copied: '概览已复制到剪贴板', copyFailed: '复制失败', shareText: '【小周账本】{{name}} 的人情概览：\n总收到：¥{{totalReceived}}\n总送出：¥{{totalGiven}}\n净结余：¥{{balance}}\n记录点滴人情，温馨维系社交！\n\n访问 {{domain}} 立即体验' },
+      common: { delete: '删除', cancel: '取消', confirm: '确定', edit: '编辑', loading: '加载中...', success: '操作成功', error: '发生错误', save: '保存', deleteRecordConfirm: '确定删除该条记录？' },
+      voiceCommand: {
+        title: '语音智能记账',
+        voiceInput: '语音录入',
+        voiceHint: '说中文，比如“帮我新增一个账目，给张三 200 元，类别 是 结婚礼金”。',
+        start: '开始',
+        stop: '停止',
+        reRecord: '重录',
+        audioReady: '录音已生成，可试听后发送',
+        recording: '录音中...',
+        recorded: '录音完成',
+        manualInput: '手动输入指令',
+        manualPlaceholder: '也可以直接输入，例如：新增一个记录，给李四 500 元，类别 是 生日礼物。',
+        instructionsTitle: '执行说明',
+        instructionsDescription: '语音和文字指令会自动解析为增删改操作，并提交到当前家庭账本中。',
+        instructionsNote: '若同时提供语音和文字，则优先使用文字指令。',
+        currentLedgerToggle: '在当前账本下新增记录',
+        currentLedgerToggleDescription: '若开启，新增记录时将默认关联当前账本，除非指令中另有指定账本。',
+        send: '发送指令并执行',
+        close: '关闭',
+        executedTitle: '已执行指令',
+        confirmedTitle: '候选已确认',
+        ambiguousTitle: '需要确认的候选项',
+        candidateAction: '候选操作 {{index}}',
+        candidateHelp: '选择候选项后，点击“确认所选候选”完成实际更新/删除操作。',
+        createContactAndExecute: '新建联系人并执行',
+        createContactAndExecuteHint: '使用记录中的姓名创建联系人并提交记录。',
+        selectExistingContact: '手动选择已有联系人',
+        recordNoContactTitle: '未找到联系人',
+        recordNoContactDescription: '未找到与 {{name}} 匹配的联系人。请选择新建联系人或手动选择已有联系人。',
+        confirmSelected: '确认所选候选',
+        historyTitle: '历史操作',
+        historyDescription: '显示当前会话内的所有 AI 指令结果。',
+        loading: { execute: '执行中...', confirm: '确认中...' },
+        toast: { executed: '指令已执行', confirmed: '候选项已确认' },
+        errors: { noFamily: '请先选择家庭', noCommand: '请先输入指令或录音', noMicrophone: '当前浏览器不支持麦克风录音', microphoneFail: '无法获取麦克风权限', stopFailed: '停止录音失败', executeFail: '执行失败，请重试', confirmFail: '确认失败，请重试', noCandidateSelected: '请先选择至少一个候选项进行确认' },
+        historyItem: { title: '历史操作 {{index}}', ambiguous: '需要确认：存在多个匹配项', success: '执行成功', error: '失败：{{error}}' },
+        suffix: { remarks: '，备注：{{remarks}}', arrow: ' → {{value}}', date: '，日期：{{date}}', description: '，描述：{{description}}', ledger: '，账本：{{ledgerTitle}}', note: '，说明：{{description}}' },
+        summary: {
+          contacts: { create: '新增联系人：{{name}}{{remarks}}', update: '编辑联系人：{{name}}{{newName}}{{remarks}}', delete: '删除联系人：{{name}}' },
+          ledgers: { create: '新增账本：{{title}}{{date}}{{description}}', update: '编辑账本：{{title}}{{newTitle}}{{date}}{{description}}', delete: '删除账本：{{title}}' },
+          records: { create: '新增记录：{{personName}} {{type}} {{amount}}，类别：{{eventType}}{{ledgerTitle}}{{description}}' }
+        },
+        unknown: '未知'
+      },
+      form: { title: '新增人情记录', editTitle: '修改人情记录', update: '更新记录', give: '送出礼金', receive: '收到礼金', amount: '金额', person: '往来对象', category: '事项类别', type: '类型', note: '备注', date: '日期', submit: '确定记录', saving: '保存中...', description: '详细备注', ledger: '关联礼簿', ledger_none: '独立记录 (不关联)', optional: '(选填)', saveSuccess: '记录已成功同步', saveError: '保存失败', noFamily: '请先加入家庭小组', personPlaceholder: '输入姓名', amountPlaceholder: '0.00', amountRequired: '金额必须大于0', nameRequired: '请输入姓名', eventTypeRequired: '请选择事项类型' },
+      contacts: { title: '社交圈', subtitle: '管理您的人情往来对象', add: '新增联系人', addSuccess: '新增联系人成功', search: '搜索联系人...', name: '姓名', remarks: '备注', namePlaceholder: '请输入联系人姓名', remarksPlaceholder: '可选：备注信息（如昵称、职位等）', noContacts: '暂无联系人', deleteConfirm: '确定删除该联系人吗？相关记录将不再关联此人。', edit: '编辑联系人', saveSuccess: '保存成功', deleteSuccess: '已删除', syncPrompt: '将旧记录中的姓名同步为专业联系人', syncButton: '同步现有记录', syncSuccess: '同步完成，新增了 {{count}} 个联系人' },
+      timeline: { title: '时间轴', subtitle: '按时间顺序查看所有记录', noRecords: '暂无记录', allLoaded: '已全部加载', exportImage: '导出图片', exporting: '导出中...', exportSuccess: '图片导出成功', exportFailed: '导出失败' },
+      contactDetail: { title: '联系人详情', back: '返回联系人列表', totalGiven: '总送出', totalReceived: '总收到', netBalance: '净结余', recordCount: '往来记录数', records: '来往记录', noRecords: '暂无往来记录', eventType: '事项类型', amount: '金额', date: '日期', description: '备注', give: '送出', receive: '收到', stats: '统计分析', monthlyTrend: '月度趋势', categoryDistribution: '事项分布', allRecords: '全部记录' },
+      analytics: { title: '数据分析', trends: '收支趋势', categories: '分类占比', summary: '数据概览', topEvent: '最常往来', maxGift: '最大礼金', no_ledger: '无关联', topEvent_Wedding: '结婚', topEvent_Birthday: '生日', topEvent_Graduation: '升学', topEvent_Baby: '宝宝', topEvent_FirstBirthday: '周岁', topEvent_Festival: '节日', topEvent_Moving: '乔迁', topEvent_Visit: '探望', topEvent_Funeral: '白事', topEvent_Other: '其它' },
+      settings: { title: '设置', profile: '个人资料', family: '家庭设置', preferences: '系统偏好', language: '语言', data: '数据管理', export: '导出数据 (JSON)', import: '导入恢复', social: '社交与分享', shareCard: '生成总结卡片', familyGroup: '管理家庭小组', inviteCode: '家庭邀请码', copyInvite: '复制邀请码', copySuccess: '邀请码已复制', copyError: '复制失败', logout: '退出登录', adminDashboard: '管理员面板', feedback: '发送反馈', feedbackPrompt: '请输入您的反馈建议：', feedbackSuccess: '感谢您的反馈！', feedbackError: '发送失败', exportSuccess: '备份导出成功', exportError: '导出失败', importSuccess: '数据导入成功', importError: '导入失败，格式错误', migrateData: '数据迁移与同步', switchFamily: '切换家庭账本', switchSuccess: '切换成功，即将刷新页面', switchError: '切换失败', leaveFamily: '退出当前家庭', leaveConfirm: '退出后，您将无法访问该家庭的礼金数据。确定退出吗？', leaveSuccess: '已成功退出家庭', myFamilies: '我的家庭列表' },
+      ledgers: { subtitle: '管理您的活动礼金账簿', addLedger: '新建礼簿', editLedger: '编辑礼簿', deleteConfirm: '该礼簿下明细也将同步删除，确定要删除这个礼簿吗？', deleteWarning: '删除礼簿不会删除其包含的明细记录，这些记录将变为独立状态。', eventTabs: '礼簿管理', detailTabs: '所有明细', noLedgers: '暂无礼簿', noLedgersHelp: '创建一个活动礼簿以专门追踪特定社交活动的礼金往来。', createNow: '立即创建', totalAmount: '合计', searchPlaceholder: '搜索姓名、活动或备注...', noResults: '未找到匹配的记录', allLoaded: '所有记录已加载' },
+      ledgerForm: { title: '创建新礼簿', name: '礼簿标题', namePlaceholder: '例如：表哥婚礼、外公八十寿辰', date: '活动日期', dateRequired: '请选择活动日期', note: '备注描述', notePlaceholder: '选填，例如地点或具体事由', submit: '立即创建', submitting: '正在创建...', success: '礼簿创建成功', error: '创建失败，请重试', titleRequired: '请输入礼簿名称' },
+      familyDialog: { title: '加入家庭小组', desc: '输入家庭成员分享给您的邀请码，即可实时同步账本。', label: '家庭邀请码', placeholder: '例如: F1-8892', submit: '立即加入', submitting: '正在加入...', success: '成功加入家庭，即将刷新页面', error: '加入失败，请检查邀请码', emptyCode: '请输入邀请码' },
+      shareCard: { title: '小周账本 · XiaoZhou Ledger', report: '{{name}} 的人情报告', balanceLabel: '当前结余 (CNY)', topEventLabel: '最常往来事项', footer: '数字化管理人情，温馨维系社交', close: '关闭', download: '下载图片', saveSuccess: '图片已保存' },
+      recordDetail: { title: '人情往来记录详情', back: '返回列表', noRecords: '暂无记录' },
+      ledgerDetail: { back: '返回列表', summary: '数据摘要', records: '礼簿明细', noRecords: '该礼簿中暂无明细', totalBalance: '礼簿合计', allLoaded: '所有记录已加载', exportLedger: '导出礼簿', exporting: '生成中...' },
+      ledgerExport: { title: '导出礼簿', desc: '选择导出格式，系统将自动生成包含封面和记录页面的礼簿文件', singleImage: '单图片导出', singleImageDesc: '将整个礼簿导出为一张长图片，方便分享和打印', imageZip: '多图片压缩包', imageZipDesc: '将礼簿的每一页导出为单独的图片文件，打包成压缩包', pdf: 'PDF文档导出', pdfDesc: '将礼簿导出为PDF文档，适合专业打印和存档', feature1: '竖向拼接所有页面', feature2: 'A4纸张尺寸', feature3: '高清PNG格式', feature4: '每页一张图片', feature5: 'ZIP压缩包格式', feature6: '标准PDF格式', feature7: '分页显示', cancel: '取消', generating: '正在生成导出文件...', successSingle: '单图片导出成功', successZip: '压缩包导出成功', successPDF: 'PDF导出成功', failed: '导出失败，请重试', imageGenerationFailed: '生成图片失败，请重试', invalidDataType: '不支持的数据类型。必须是字符串、ArrayBuffer 或 Blob。', appName: '小周账本', cover: '封面', recordPage: '记录页', page: '第 {{page}} 页 / 共 {{total}} 页', totalRecords: '共 {{count}} 条记录', ledgerFile: '礼簿', recordPageFile: '记录页', by: '由小周账本生成', pageSubtotal: '本页小计', generatedTime: '生成时间' },
+      login: { brand: '小周账本', slogan: 'XiaoZhou Ledger · 人情往来', loginTitle: '欢迎回来', loginSubtitle: '登录您的账号，同步家庭礼金明细', registerTitle: '开启记录', registerSubtitle: '数字化管理人情往来，温馨维系社交关系', email: '邮箱账号', emailPlaceholder: 'name@example.com', emailError: '请输入有效的邮箱', password: '访问密码', passwordPlaceholder: '••••••••', passwordError: '密码至少6位', name: '您的称呼', namePlaceholder: '张三', nameError: '请输入姓名', loginButton: '立即登录', registerButton: '创建账号', forgotPassword: '忘记密码？', noAccount: '还没有账号？', hasAccount: '已有账号？', register: '立即注册', backToLogin: '返回登录', footer: '数字化管理人情。', welcomeBack: '欢迎回来，即将跳转到首页！', loginFailed: '登录失败，请检查账号密码', registerSuccess: '注册成功，已为您创建专属家庭账本', registerFailed: '注册失败，请稍后重试', forgotPwdInfo: '密码找回功能正在开发中', forgotPwdDesc: '请联系管理员或使用注册邮箱重新尝试。' },
+      protectedRoute: { redirecting: '正在跳转到登录页...' },
+      errors: {
+        MISSING_FIELDS: '缺少必填字段',
+        EMAIL_ALREADY_REGISTERED: '该邮箱已被注册',
+        CREATE_USER_FAILED: '创建账号失败',
+        INVALID_CREDENTIALS: '邮箱或密码错误',
+        UNAUTHORIZED: '未授权，请重新登录',
+        ACCESS_DENIED: '无权访问',
+        NOT_FOUND: '未找到',
+        default: '请求失败，请稍后再试'
+      }
+    }
+  },
+  en: {
+    translation: {
+      nav: { home: 'Home', ledgers: 'Ledgers', analytics: 'Stats', settings: 'Settings', contacts: 'Contacts' },
+      dashboard: { balance: 'Net Balance', received: 'Total Received', given: 'Total Given', activity: 'Recent Activity', viewAll: 'View All', viewTimeline: 'View all on timeline', noRecords: 'No records yet. Tap "+" to start.', reminders: 'Reminders', shareTitle: 'My XiaoZhou Ledger Overview', copied: 'Summary copied to clipboard', copyFailed: 'Copy failed', shareText: "[XiaoZhou Ledger] {{name}}'s Renqing summary:\nTotal received: ¥{{totalReceived}}\nTotal given: ¥{{totalGiven}}\nNet balance: ¥{{balance}}\nManaging social connections with warmth!\n\nVisit {{domain}} to get started" },
+      common: { delete: 'Delete', cancel: 'Cancel', confirm: 'Confirm', edit: 'Edit', loading: 'Loading...', success: 'Success', error: 'Error', save: 'Save', deleteRecordConfirm: 'Confirm to delete this record?' },
+      voiceCommand: {
+        title: 'Voice Smart Ledger',
+        voiceInput: 'Voice Input',
+        voiceHint: 'Speak Chinese, such as “帮我新增一个账目，给张三 200 元，类别 是 结婚礼金”。',
+        start: 'Start',
+        stop: 'Stop',
+        reRecord: 'Re-record',
+        audioReady: 'Record completed, you can play it before sending',
+        recording: 'Recording...',
+        recorded: 'Recorded',
+        manualInput: 'Manual Command Input',
+        manualPlaceholder: 'You can also type, e.g.: Add a record for Li Si 500 yuan, category is birthday gift.',
+        instructionsTitle: 'Execution Notes',
+        instructionsDescription: 'Voice or text commands will be parsed into CRUD actions and submitted to the current family ledger.',
+        instructionsNote: 'If both voice and text are provided, text is used first.',
+        currentLedgerToggle: 'Add new records to current ledger',
+        currentLedgerToggleDescription: 'When enabled, new records will default to the current ledger unless another ledger is specified in your command.',
+        send: 'Send Command and Execute',
+        close: 'Close',
+        executedTitle: 'Executed Commands',
+        confirmedTitle: 'Confirmation Completed',
+        ambiguousTitle: 'Items Requiring Confirmation',
+        candidateAction: 'Candidate Action {{index}}',
+        candidateHelp: 'Select a candidate, then click “Confirm Selected” to complete the update/delete operation.',
+        createContactAndExecute: 'Create contact and execute',
+        createContactAndExecuteHint: 'Create a new contact using the record name and submit the record.',
+        selectExistingContact: 'Select existing contact',
+        recordNoContactTitle: 'Contact not found',
+        recordNoContactDescription: 'No existing contact matches {{name}}. Choose to create a new contact or select an existing one.',
+        confirmSelected: 'Confirm Selected',
+        historyTitle: 'History',
+        historyDescription: 'Shows all AI command results within the current session.',
+        loading: { execute: 'Executing...', confirm: 'Confirming...' },
+        toast: { executed: 'Command executed', confirmed: 'Selected candidates confirmed' },
+        errors: { noFamily: 'Please select a family first', noCommand: 'Please enter a command or record audio', noMicrophone: 'Your browser does not support microphone recording', microphoneFail: 'Unable to access microphone', stopFailed: 'Failed to stop recording', executeFail: 'Execution failed, please try again', confirmFail: 'Confirmation failed, please try again', noCandidateSelected: 'Please select at least one candidate to confirm' },
+        historyItem: { title: 'History item {{index}}', ambiguous: 'Requires confirmation: multiple matches found', success: 'Successful', error: 'Failed: {{error}}' },
+        suffix: { remarks: ', remarks: {{remarks}}', arrow: ' → {{value}}', date: ', date: {{date}}', description: ', description: {{description}}', ledger: ', ledger: {{ledgerTitle}}', note: ', note: {{description}}' },
+        summary: {
+          contacts: { create: 'Add contact: {{name}}{{remarks}}', update: 'Edit contact: {{name}}{{newName}}{{remarks}}', delete: 'Delete contact: {{name}}' },
+          ledgers: { create: 'Add ledger: {{title}}{{date}}{{description}}', update: 'Edit ledger: {{title}}{{newTitle}}{{date}}{{description}}', delete: 'Delete ledger: {{title}}' },
+          records: { create: 'Add record: {{personName}} {{type}} {{amount}}, category: {{eventType}}{{ledgerTitle}}{{description}}' }
+        },
+        unknown: 'Unknown'
+      },
+      form: { title: 'New Record', editTitle: 'Edit Record', update: 'Update Record', give: 'Give', receive: 'Receive', amount: 'Amount', person: 'Person', category: 'Event Type', type: 'Type', note: 'Note', date: 'Date', submit: 'Save Record', saving: 'Saving...', description: 'Details', ledger: 'Link Ledger', ledger_none: 'Independent (No link)', optional: '(Optional)', saveSuccess: 'Record synced successfully', saveError: 'Save failed', noFamily: 'Please join a family group first', personPlaceholder: 'Enter name', amountPlaceholder: '0.00', amountRequired: 'Amount must be greater than 0', nameRequired: 'Name is required', eventTypeRequired: 'Please select an event type' },
+      contacts: { title: 'Contacts', subtitle: 'Manage your social connections', add: 'Add Contact', addSuccess: 'Contact added successfully', search: 'Search contacts...', name: 'Name', remarks: 'Remarks', namePlaceholder: 'Enter contact name', remarksPlaceholder: 'Optional: Notes (nickname, position, etc.)', noContacts: 'No contacts yet', deleteConfirm: 'Are you sure you want to delete this contact? Related records will be unlinked.', edit: 'Edit Contact', saveSuccess: 'Saved', deleteSuccess: 'Deleted', syncPrompt: 'Link existing records to professional contacts', syncButton: 'Sync Records', syncSuccess: 'Sync complete, created {{count}} contacts' },
+      timeline: { title: 'Timeline', subtitle: 'View all records in chronological order', noRecords: 'No records yet', allLoaded: 'All records loaded', exportImage: 'Export Image', exporting: 'Exporting...', exportSuccess: 'Image exported successfully', exportFailed: 'Export failed' },
+      contactDetail: { title: 'Contact Details', back: 'Back to Contacts', totalGiven: 'Total Given', totalReceived: 'Total Received', netBalance: 'Net Balance', recordCount: 'Records Count', records: 'Transaction Records', noRecords: 'No records yet', eventType: 'Event Type', amount: 'Amount', date: 'Date', description: 'Notes', give: 'Give', receive: 'Receive', stats: 'Statistics', monthlyTrend: 'Monthly Trend', categoryDistribution: 'Category Distribution', allRecords: 'All Records' },
+      analytics: { title: 'Analytics', trends: 'Trends', categories: 'Categories', summary: 'Summary', topEvent: 'Top Event', maxGift: 'Max Gift', no_ledger: 'No Ledger', topEvent_Wedding: 'Wedding', topEvent_Birthday: 'Birthday', topEvent_Graduation: 'Graduation', topEvent_Baby: 'Baby', topEvent_FirstBirthday: 'First Birthday', topEvent_Festival: 'Festival', topEvent_Moving: 'Moving', topEvent_Visit: 'Visit', topEvent_Funeral: 'Funeral', topEvent_Other: 'Other' },
+      settings: { title: 'Settings', profile: 'Profile', family: 'Family', preferences: 'Preferences', language: 'Language', data: 'Data Management', export: 'Export Backup', import: 'Import Restore', social: 'Social & Sharing', shareCard: 'Generate Summary Card', familyGroup: 'Manage Family Group', inviteCode: 'Family Invite Code', copyInvite: 'Copy Code', copySuccess: 'Invite code copied', copyError: 'Copy failed', logout: 'Logout', adminDashboard: 'Admin Panel', feedback: 'Send Feedback', feedbackPrompt: 'Please enter your feedback:', feedbackSuccess: 'Thank you for your feedback!', feedbackError: 'Failed to send feedback', exportSuccess: 'Backup exported successfully', exportError: 'Export failed', importSuccess: 'Data imported successfully', importError: 'Import failed, invalid format', migrateData: 'Data Sync & Migration', switchFamily: 'Switch Family Ledger', switchSuccess: 'Switched successfully, refreshing...', switchError: 'Failed to switch family', leaveFamily: 'Leave Current Family', leaveConfirm: 'After leaving, you will no longer have access to this family\'s data. Are you sure?', leaveSuccess: 'Left family successfully', myFamilies: 'My Family Groups' },
+      ledgers: { subtitle: 'Manage your event-based gift lists', addLedger: 'New Ledger', editLedger: 'Edit Ledger', deleteConfirm: 'All details under this ledger will also be deleted. Are you sure you want to delete this ledger?', deleteWarning: 'Deleting a ledger will not delete its entries. They will become independent records.', eventTabs: 'Event Ledgers', detailTabs: 'All Transactions', noLedgers: 'No Ledgers Found', noLedgersHelp: 'Create your first event ledger to track specific social activities.', createNow: 'Create Now', totalAmount: 'Totals', searchPlaceholder: 'Search name, event, notes...', noResults: 'No records matching your search', allLoaded: 'All records loaded' },
+      ledgerForm: { title: 'Create New Ledger', name: 'Ledger Title', namePlaceholder: 'e.g. Cousin\'s Wedding', date: 'Event Date', dateRequired: 'Please select an event date', note: 'Description', notePlaceholder: 'Optional: location or specific details', submit: 'Create Now', submitting: 'Creating...', success: 'Ledger created successfully', error: 'Failed to create, please try again', titleRequired: 'Please enter a title' },
+      familyDialog: { title: 'Join Family Group', desc: 'Enter the invite code shared by your family member to sync ledgers.', label: 'Invite Code', placeholder: 'e.g. F1-8892', submit: 'Join Now', submitting: 'Joining...', success: 'Joined family: {{name}}', error: 'Failed to join, check the code', emptyCode: 'Please enter invite code' },
+      shareCard: { title: 'XiaoZhou Ledger', report: 'Report for {{name}}', balanceLabel: 'Net Balance (CNY)', topEventLabel: 'Top Event Category', footer: 'Managing connections with digital warmth', close: 'Close', download: 'Download Image', saveSuccess: 'Image saved successfully' },
+      recordDetail: { title: 'Record Details', back: 'Back to List', noRecords: 'No records yet' },
+      ledgerDetail: { back: 'Back to List', summary: 'Summary', records: 'Ledger Entries', noRecords: 'No entries in this ledger yet', totalBalance: 'Ledger Total', allLoaded: 'All records loaded', exportLedger: 'Export Ledger', exporting: 'Generating...' },
+      ledgerExport: { title: 'Export Ledger', desc: 'Choose an export format. The system will automatically generate a complete ledger file with cover and record pages.', singleImage: 'Single Image Export', singleImageDesc: 'Export the entire ledger as a long image for easy sharing and printing', imageZip: 'Multi-Image Archive', imageZipDesc: 'Export each ledger page as a separate image file, packaged as a zip archive', pdf: 'PDF Document Export', pdfDesc: 'Export the ledger as a PDF document, perfect for professional printing and archiving', feature1: 'Stitched vertically', feature2: 'A4 paper size', feature3: 'High-resolution PNG', feature4: 'One image per page', feature5: 'ZIP archive format', feature6: 'Standard PDF format', feature7: 'Paginated view', cancel: 'Cancel', generating: 'Generating export file...', successSingle: 'Single image exported successfully', successZip: 'Archive exported successfully', successPDF: 'PDF exported successfully', failed: 'Export failed, please try again', imageGenerationFailed: 'Image generation failed, please try again', invalidDataType: 'Unsupported data type. Must be string, ArrayBuffer, or Blob.', appName: 'XiaoZhou Ledger', cover: 'Cover', recordPage: 'Record Page', page: 'Page {{page}} / {{total}}', totalRecords: 'Total {{count}} records', ledgerFile: 'Ledger', recordPageFile: 'Record_Page', by: 'Generated by XiaoZhou Ledger', pageSubtotal: 'Page Subtotal', generatedTime: 'Generated Time' },
+      login: { brand: 'XiaoZhou Ledger', slogan: 'XiaoZhou Ledger · Gift Tracker', loginTitle: 'Welcome Back', loginSubtitle: 'Sign in to sync your family ledger', registerTitle: 'Get Started', registerSubtitle: 'Digitally manage social gifts, warmly maintain connections', email: 'Email Address', emailPlaceholder: 'name@example.com', emailError: 'Please enter a valid email', password: 'Access Password', passwordPlaceholder: '••••••••', passwordError: 'Password must be at least 6 characters', name: 'Your Name', namePlaceholder: 'John Doe', nameError: 'Please enter your name', loginButton: 'Sign In', registerButton: 'Create Account', forgotPassword: 'Forgot Password?', noAccount: "Don't have an account?", hasAccount: 'Already have an account?', register: 'Sign Up', backToLogin: 'Back to Login', footer: 'Managing connections with digital warmth.', welcomeBack: 'Welcome back, redirecting to home!', loginFailed: 'Login failed, please check your credentials', registerSuccess: 'Registration successful, your family ledger is ready!', registerFailed: 'Registration failed, please try again later', forgotPwdInfo: 'Password recovery is under development', forgotPwdDesc: 'Please contact admin or try registering again with your email.' },
+      protectedRoute: { redirecting: 'Redirecting to login...' },
+      errors: {
+        MISSING_FIELDS: 'Missing required fields',
+        EMAIL_ALREADY_REGISTERED: 'This email is already registered',
+        CREATE_USER_FAILED: 'Failed to create account',
+        INVALID_CREDENTIALS: 'Invalid email or password',
+        UNAUTHORIZED: 'Unauthorized, please log in again',
+        ACCESS_DENIED: 'Access denied',
+        NOT_FOUND: 'Not found',
+        default: 'Request failed, please try again later'
+      }
+    }
+  }
+};
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources,
+    fallbackLng: 'zh',
+    interpolation: { escapeValue: false },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+    }
+  });
+export default i18n;
