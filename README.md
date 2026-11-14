@@ -158,15 +158,26 @@ xiaozhou-ledger-workers/
    # 将返回的 database_id 更新到 wrangler.jsonc
 
    # 应用数据库表结构
-   npx wrangler d1 execute xiaozhou-ledger --file worker/schema.sql
+   npx wrangler d1 execute xiaozhou-ledger --remote --file worker/schema.sql
    ```
 
-3. **启动开发服务器：**
+3. **设置 JWT 密钥（部署前必做）：**
+   ```bash
+   # 生成一个随机密钥
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+   # 保存为 Cloudflare Secret（粘贴上一步生成的密钥）
+   npx wrangler secret put JWT_SECRET
+   ```
+
+   > 不要把 `JWT_SECRET` 写进 `wrangler.jsonc` 或提交到仓库。
+
+4. **启动开发服务器：**
    ```bash
    npm run dev
    ```
 
-4. **打开浏览器：**
+5. **打开浏览器：**
    - 前端：`http://localhost:3000`
    - API：自动通过 Vite 代理转发
 
@@ -181,7 +192,7 @@ npm run deploy
 ```
 
 > [!NOTE]
-> 部署前请确保已在 `wrangler.jsonc` 中配置好 D1 数据库。
+> 部署前请确保已在 `wrangler.jsonc` 中配置好 D1 数据库，并通过 `npx wrangler secret put JWT_SECRET` 设置了 JWT 密钥。
 
 ### 可用脚本
 

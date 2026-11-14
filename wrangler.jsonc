@@ -17,9 +17,6 @@
   "observability": {
     "enabled": true
   },
-  "vars": {
-    "JWT_SECRET": "xiaozhou-ledger-workers-secret-1357924680",
-  },
   "ai": {
     "binding": "AI"
   },
@@ -27,7 +24,7 @@
     {
       "binding": "DB",
       "database_name": "xiaozhou-ledger",
-      "database_id": "00000000-0000-0000-0000-000000000000"
+      "database_id": "32efc404-327e-474a-8351-23e90f08c5ac"
     }
   ]
 }
